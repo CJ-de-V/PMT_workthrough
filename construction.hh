@@ -14,16 +14,24 @@
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {
- 	public:
- 		MyDetectorConstruction();
- 		~MyDetectorConstruction();
- 		virtual G4VPhysicalVolume *Construct();
- 	
- 	private:
- 	G4LogicalVolume *logicDetector;
- 	virtual void ConstructSDandField();
- 	
- 	G4GenericMessenger *fMessenger;
+public:
+MyDetectorConstruction();
+~MyDetectorConstruction();
+virtual G4VPhysicalVolume *Construct();
+
+private:
+virtual void ConstructSDandField();
+G4int nCols, nRows;
+G4Box  *solidWorld, *solidRadiator, *solidDetector;
+G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector;
+G4VPhysicalVolume *physWorld, *physRadiator, *physDetector;
+
+G4GenericMessenger *fMessenger;
+
+G4Material *SiO2, *H2O, *Aerogel, *worldMat;
+G4Element *C;
+
+void DefineMaterials();
 };
 
 #endif
