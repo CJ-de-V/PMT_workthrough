@@ -15,6 +15,8 @@ int main(int argc, char ** argv){
 
 	#ifdef G4MULTITHREADED
 								G4MTRunManager *runManager = new G4MTRunManager();
+								//initialize g4kernel, just how it's done
+								runManager->SetNumberOfThreads(8);
 	#else
 								G4RunManager *runManager = new G4RunManager();
 	#endif
@@ -22,7 +24,6 @@ int main(int argc, char ** argv){
 								runManager->SetUserInitialization(new MyDetectorConstruction ());
 								runManager->SetUserInitialization(new MyPhysicsList());
 								runManager->SetUserInitialization(new MyActionInitialization());
-								runManager->Initialize();
 
 								G4VisManager *visManager = new G4VisExecutive();
 								//visManager->Initialize(); into run.mac for multithreading reasons
@@ -37,6 +38,7 @@ int main(int argc, char ** argv){
 																G4String fileName = argv[1];
 																UImanager->ApplyCommand(command+fileName);
 								}
+								//runManager->Initialize();
 
 								return 0;
 }
