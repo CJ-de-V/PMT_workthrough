@@ -31,7 +31,10 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory * ROhi
 
 	G4VPhysicalVolume *physVol = touchable->GetVolume();
 	G4ThreeVector posDetector = physVol->GetTranslation();
-	//G4cout << "Detector position: " <<posDetector<<G4endl;
+	
+	#ifndef G4MULTITHREADED
+		G4cout << "Detector position: " <<posDetector<<G4endl;
+	#endif
 	//now we have the position of our detector
 
 	G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
