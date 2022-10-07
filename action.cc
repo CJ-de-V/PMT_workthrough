@@ -22,4 +22,10 @@ void MyActionInitialization::Build () const
 
         MyRunAction *runAction = new MyRunAction();
         SetUserAction(runAction);
+
+        MyEventAction *eventaction = new MyEventAction(runAction);
+        SetUserAction(eventaction);
+
+        MySteppingAction *steppingaction = new MySteppingAction(eventaction);
+        SetUserAction(steppingaction);
 }

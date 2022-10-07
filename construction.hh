@@ -17,13 +17,18 @@ class MyDetectorConstruction : public G4VUserDetectorConstruction
 public:
 MyDetectorConstruction();
 ~MyDetectorConstruction();
+
+G4LogicalVolume *GetScoringVolume() const {return fScoringVolume;}
+
 virtual G4VPhysicalVolume *Construct();
 
 private:
 virtual void ConstructSDandField();
+
 G4int nCols, nRows;
-G4Box  *solidWorld, *solidRadiator, *solidDetector;
-G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector;
+
+G4Box *solidWorld, *solidRadiator, *solidDetector;
+G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume ;
 G4VPhysicalVolume *physWorld, *physRadiator, *physDetector;
 
 G4GenericMessenger *fMessenger;
