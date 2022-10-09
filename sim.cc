@@ -6,6 +6,9 @@
 #include "G4VisManager.hh"
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
+#include "QGSP_BERT.hh"
+//standard physics list for hadron processes
+#include "G4DecayPhysics.hh" //why can i leave this out again?
 
 #include "construction.hh"
 #include "physics.hh"
@@ -26,9 +29,15 @@ int main(int argc, char **argv)
     runManager->SetUserInitialization(new MyPhysicsList());
     runManager->SetUserInitialization(new MyActionInitialization());
 
+    //atmospheric processes
+  /*  G4VModularPhysicsList *physics = new QGSP_BERT();
+    physics->RegisterPhysics(new G4DecayPhysics());
+    runManager->SetUserInitialization(physics);*/
+
     G4VisManager *visManager = new G4VisExecutive();
     visManager->Initialize();                            // into run.mac for multithreading reasons
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
+
 
     if (argc == 1)
     {

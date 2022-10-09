@@ -35,8 +35,8 @@ G4int nCols, nRows;
 G4double xWorld, yWorld, zWorld;
 G4bool isCherenkov, isScintillator, isTOF, isAtmosphere;
 
-G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, solidAtmosphere;
-G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere;
+G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere;
+G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10];
 G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10];
 G4OpticalSurface *mirrorSurface;
 

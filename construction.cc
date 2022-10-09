@@ -8,15 +8,15 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger->DeclareProperty("cherenkov", isCherenkov, "Toggle Cherenkov Setup");
     fMessenger->DeclareProperty("scintillator", isScintillator, "Toggle Scintillator Setup");
     fMessenger->DeclareProperty("TOF", isTOF, "Toggle time of flight setup");
-    fMessenger->DeclareProperty("atmosphere", isTOF, "Toggle atmosphere setup");
+    fMessenger->DeclareProperty("atmosphere", isAtmosphere, "Toggle atmosphere setup");
     nCols = 10;
     nRows = 10;
 
     DefineMaterials();
 
-    xWorld = 40. * km;
-    yWorld = 4. * km;
-    zWorld = 20. * km;
+    xWorld = 20. * m;
+    yWorld = 20. * m;
+    zWorld = 20. * m;
 
     isCherenkov = false;
     isScintillator = false;
@@ -84,11 +84,42 @@ void MyDetectorConstruction::DefineMaterials()
     mptWorld->AddProperty("RINDEX", energy, rindexWorld, 2);
     worldMat->SetMaterialPropertiesTable(mptWorld);
 
+    //atmosphere setup
     G4double density0 = 1.29 * kg / m3;
     G4double aN = 14.01 * g / mole;
     G4double aO = 16 * g / mole;
+
     N = new G4Element("Nitrogen", "N", 7, aN);
     O = new G4Element("Oxygen", "O", 8, aO);
+
+    G4double f = 3;
+    G4double R = 8.3144626181532;
+    G4double g0 = 9.81;
+    G4double kappa = (f + 2) / f;
+    G4double T = 293.15;
+    G4double M = (0.3 * aO + 0.7 * aN) / 1000;
+
+    for (G4int i = 0; i < 10; i++)
+    {
+        std::stringstream stri;
+        stri << i;
+        G4double h = 40e3 / 10. * i;
+        G4double density = density0 * pow(1 - (1 - kappa) / kappa * M * g0 * h / (R * T), (1 / (kappa - 1)));
+        Air[i] = new G4Material("G4_Air" + stri.str(), density, 2);
+        Air[i]->AddElement(N, 70 * perCent);
+        Air[i]->AddElement(O, 30 * perCent);
+    }
+}
+
+void MyDetectorConstruction::ConstructAtmosphere()
+{
+    solidAtmosphere = new G4Box("solidAtmosphere", xWorld, yWorld, zWorld / 10.);
+    for (G4int i = 0; i < 10; i++)
+    {
+        logicAtmosphere[i] = new G4LogicalVolume(solidAtmosphere, Air[i], "logicAtmosphere");
+        physAtmosphere[i] = new G4PVPlacement(0, G4ThreeVector(0, 0, zWorld / 10. * 2 * i - zWorld + zWorld / 10.),
+                                              logicAtmosphere[i], "physAtmosphere", logicWorld, false, i, true);
+    }
 }
 
 void MyDetectorConstruction::ConstructCherenkov()
@@ -168,6 +199,10 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     {
         ConstructTOF();
     }
+    if (isAtmosphere)
+    {
+        ConstructAtmosphere();
+    }
 
     return physWorld;
 }
@@ -175,9 +210,10 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 void MyDetectorConstruction::ConstructSDandField()
 {
     MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector");
-    if (logicDetector != NULL)
-    {
+
+    /*if (logicDetector != NULL)
+       {
         //if the detector has been defined in any setup we wish to have a sensitivedetector
         logicDetector->SetSensitiveDetector(sensDet);
-    }
+       } commented out for the atmospheric case, causes some issues*/
 }

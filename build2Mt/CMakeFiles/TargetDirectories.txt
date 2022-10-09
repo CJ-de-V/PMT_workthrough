@@ -1,0 +1,4 @@
+/home/cornelius/Documents/mygeant4projects/physicsmatterstut/build2Mt/CMakeFiles/sim.dir
+/home/cornelius/Documents/mygeant4projects/physicsmatterstut/build2Mt/CMakeFiles/Simulation.dir
+/home/cornelius/Documents/mygeant4projects/physicsmatterstut/build2Mt/CMakeFiles/edit_cache.dir
+/home/cornelius/Documents/mygeant4projects/physicsmatterstut/build2Mt/CMakeFiles/rebuild_cache.dir

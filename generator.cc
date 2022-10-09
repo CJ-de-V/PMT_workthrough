@@ -4,17 +4,18 @@ MyPrimaryGenerator::MyPrimaryGenerator()
 {
     fParticleGun = new G4ParticleGun(1); //only 1 primary vertex per event one particle
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition *particle = particleTable->FindParticle("geantino");
+    G4ParticleDefinition *particle = particleTable->FindParticle("chargedgeantino");
     /*formerly proton/mu-, geantino is a generic placeholder since macros set the particle anyway,
-    as it turns out it gets weird if you combine moving and non moving applications, so we opt to set
-    it here instead of the macro*/
+       as it turns out it gets weird if you combine moving and non moving applications, so we opt to set
+       it here instead of the macro*/
+    //additionally swapped to chargedgeantino for protons from atmosphere
 
-    G4ThreeVector pos(0., 0., 0);
+    G4ThreeVector pos(0., 0., -20.*m);
     G4ThreeVector mom(0., 0., 1.);
 
     fParticleGun->SetParticlePosition(pos);
     fParticleGun->SetParticleMomentumDirection(mom);
-    fParticleGun->SetParticleMomentum(0. * GeV);
+    fParticleGun->SetParticleMomentum(100 * GeV);
     fParticleGun->SetParticleDefinition(particle);
 }
 
