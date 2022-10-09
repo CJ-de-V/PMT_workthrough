@@ -1,3 +1,6 @@
 /run/initialize
-/gun/momentumAmp 10 GeV
-/run/beamOn 1000
+/gun/momentumAmp 1 GeV
+#some comment about the run here
+/gun/position 0 0 -5 m
+/gun/particle pi+
+/run/beamOn 250

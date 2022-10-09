@@ -16,7 +16,7 @@ MySensitiveDetector::MySensitiveDetector(G4String name) : G4VSensitiveDetector(n
         {
             break;
         }
-        G4cout << wlen << " " << queff << G4endl;
+        //  G4cout << wlen << " " << queff << G4endl;
         quEff->InsertValues(wlen, queff / 100.);
     }
     datafile.close();
@@ -32,7 +32,9 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 {
     G4Track *track = aStep->GetTrack();
 
-    track->SetTrackStatus(fStopAndKill);
+    //track->SetTrackStatus(fStopAndKill);
+    /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
+
     /*as soon as the photon enters zie photon it DIES, track not propogated any further,
        if omitted they propgate through zie detector and we pick up a z component different from the start of our detector, that
        is to say we read its value inside the detector which is nonsensical*/
@@ -45,6 +47,8 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     G4ThreeVector momPhoton = preStepPoint->GetMomentum();
 
     G4double wlen = (1.239841939 * eV / momPhoton.mag()) * 1E+03;
+    G4double time = preStepPoint->GetGlobalTime();
+    /*global vs. local time, local time is from birth of particle glob is from start of run*/
 
     //G4cout << "Photon position: " << posPhoton << G4endl;
     //actual positions of the photons.... but we don't have that irl we have only the number of the detector
@@ -60,6 +64,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
     #ifndef G4MULTITHREADED
     G4cout << "Detector position: " << posDetector << G4endl;
+    G4cout << "Photon wavelength" << wlen << G4endl;
     #endif
     //now we have the position of our detector
 
@@ -72,6 +77,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     man->FillNtupleDColumn(0, 2, posPhoton[1]);
     man->FillNtupleDColumn(0, 3, posPhoton[2]);
     man->FillNtupleDColumn(0, 4, wlen);
+    man->FillNtupleDColumn(0, 5, time);
     man->AddNtupleRow(0);
 
 
