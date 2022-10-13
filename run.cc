@@ -4,7 +4,8 @@ MyRunAction::MyRunAction()
 {
 //G4AnalysisManager::Instance()->SetVerboseLevel(1);
     G4AnalysisManager *man = G4AnalysisManager::Instance();
-
+	
+    man->SetNtupleMerging(true);
     man->CreateNtuple("Photons", "Photons");
     man->CreateNtupleIColumn("fEvent");
     man->CreateNtupleDColumn("fX");

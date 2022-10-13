@@ -35,7 +35,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     //track->SetTrackStatus(fStopAndKill);
     /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
 
-    /*as soon as the photon enters zie photon it DIES, track not propogated any further,
+    /*as soon as the photon enters the detector it DIES, track not propogated any further,
        if omitted they propgate through zie detector and we pick up a z component different from the start of our detector, that
        is to say we read its value inside the detector which is nonsensical*/
     G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
@@ -45,6 +45,10 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
     G4ThreeVector posPhoton = preStepPoint->GetPosition();
     G4ThreeVector momPhoton = preStepPoint->GetMomentum();
+    G4cout <<"DETECTOR HIT WITH VELOCITY: " <<preStepPoint->GetBeta()<<G4endl;
+    //not really sure how to filter this out to muons only
+    //Brehmstrahlung and ionization produces photons too which become problematic as well..
+
 
     G4double wlen = (1.239841939 * eV / momPhoton.mag()) * 1E+03;
     G4double time = preStepPoint->GetGlobalTime();
@@ -82,13 +86,13 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
 
 
-    if (G4UniformRand() < quEff->Value(wlen))
-    {
+  /*  if (G4UniformRand() < quEff->Value(wlen))
+    {*/
         man->FillNtupleIColumn(1, 0, evt);
         man->FillNtupleDColumn(1, 1, posDetector[0]);
         man->FillNtupleDColumn(1, 2, posDetector[1]);
         man->FillNtupleDColumn(1, 3, posDetector[2]);
         man->AddNtupleRow(1);
-    }
+  /*  } just turned off the efficiency for the time being*/
     return true;
 }

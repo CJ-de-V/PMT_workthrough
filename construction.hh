@@ -12,6 +12,7 @@
 #include "G4Tubs.hh"
 #include "G4OpticalSurface.hh"
 #include "G4LogicalSkinSurface.hh"
+#include "G4Trd.hh"
 
 #include "detector.hh"
 
@@ -33,16 +34,17 @@ virtual void ConstructSDandField();
 
 G4int nCols, nRows;
 G4double xWorld, yWorld, zWorld;
-G4bool isCherenkov, isScintillator, isTOF, isAtmosphere;
+G4bool isCherenkov, isScintillator, isTOF, isAtmosphere, isMountain;
 
-G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere;
-G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10];
-G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10];
+G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere, *solidMBase;
+G4Trd *solidMCap;
+G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10], *logicMBase, *logicMCap;
+G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10], *physMBase, *physMCap;
 G4OpticalSurface *mirrorSurface;
 
 G4GenericMessenger *fMessenger;
 
-G4Material *SiO2, *H2O, *Aerogel, *worldMat, *NaI, *Air[10];
+G4Material *SiO2, *H2O, *Aerogel, *worldMat, *NaI, *Air[10], *Granite, *Sandstone;
 G4Element *C, *Na, *I, *O, *N;
 
 void DefineMaterials();
@@ -50,6 +52,7 @@ void ConstructCherenkov();
 void ConstructScintillator();
 void ConstructTOF();
 void ConstructAtmosphere();
+void ConstructMountain();
 };
 
 #endif

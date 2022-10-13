@@ -30,9 +30,9 @@ int main(int argc, char **argv)
     runManager->SetUserInitialization(new MyActionInitialization());
 
     //atmospheric processes
-  /*  G4VModularPhysicsList *physics = new QGSP_BERT();
+    G4VModularPhysicsList *physics = new QGSP_BERT();
     physics->RegisterPhysics(new G4DecayPhysics());
-    runManager->SetUserInitialization(physics);*/
+    runManager->SetUserInitialization(physics);
 
     G4VisManager *visManager = new G4VisExecutive();
     visManager->Initialize();                            // into run.mac for multithreading reasons
