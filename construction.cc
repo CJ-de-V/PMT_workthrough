@@ -16,7 +16,7 @@ MyDetectorConstruction::MyDetectorConstruction()
 
     DefineMaterials();
 
-    double boxsize = 100.*m;
+    double boxsize = 50.*m;
     xWorld = boxsize;
     yWorld = boxsize;
     zWorld = boxsize;

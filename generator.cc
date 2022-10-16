@@ -10,7 +10,7 @@ MyPrimaryGenerator::MyPrimaryGenerator()
        it here instead of the macro*/
     //additionally swapped to chargedgeantino for protons from atmosphere
 
-    G4ThreeVector pos(0., 0., -100.*m);
+    G4ThreeVector pos(0., 0., -25.*m);
     G4ThreeVector mom(0., 0., 1.);
 
     fParticleGun->SetParticlePosition(pos);

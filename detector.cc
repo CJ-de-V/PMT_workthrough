@@ -31,7 +31,7 @@ MySensitiveDetector::~MySensitiveDetector()
 G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist)
 {
     G4Track *track = aStep->GetTrack();
-
+    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName()<<G4endl;
     //track->SetTrackStatus(fStopAndKill);
     /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
 
