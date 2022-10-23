@@ -31,7 +31,8 @@ MySensitiveDetector::~MySensitiveDetector()
 G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist)
 {
     G4Track *track = aStep->GetTrack();
-    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName()<<G4endl;
+    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName()<< " and I have a kinetic energy of "
+    << track->GetDynamicParticle()->GetKineticEnergy()<< " MeV"<<G4endl;
     //track->SetTrackStatus(fStopAndKill);
     /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
 
@@ -45,7 +46,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
     G4ThreeVector posPhoton = preStepPoint->GetPosition();
     G4ThreeVector momPhoton = preStepPoint->GetMomentum();
-    G4cout <<"DETECTOR HIT WITH VELOCITY: " <<preStepPoint->GetBeta()<<G4endl;
+    //G4cout <<"DETECTOR HIT WITH VELOCITY: " <<preStepPoint->GetBeta()<<G4endl;
     //not really sure how to filter this out to muons only
     //Brehmstrahlung and ionization produces photons too which become problematic as well..
 

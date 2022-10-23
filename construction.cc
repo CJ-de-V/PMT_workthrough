@@ -10,13 +10,14 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger->DeclareProperty("TOF", isTOF, "Toggle time of flight setup");
     fMessenger->DeclareProperty("atmosphere", isAtmosphere, "Toggle atmosphere setup");
     fMessenger->DeclareProperty("mountain", isMountain, "Toggle Mountain setup");
+    fMessenger->DeclareProperty("ScaleWorld", boxsize, "Toggle Size of setup");
 
     nCols = 10;
     nRows = 10;
 
     DefineMaterials();
 
-    double boxsize = 50.*m;
+    boxsize = 1000.*m;
     xWorld = boxsize;
     yWorld = boxsize;
     zWorld = boxsize;
@@ -177,6 +178,7 @@ void :: MyDetectorConstruction::ConstructMountain()
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
     physDetector = new G4PVPlacement(0, G4ThreeVector(0.,0., 0.999*zWorld),
                                      logicDetector, "physDetector", logicWorld, 0, true);
+
 }
 
 void MyDetectorConstruction::ConstructScintillator()

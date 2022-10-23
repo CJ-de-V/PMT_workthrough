@@ -10,6 +10,6 @@
 /vis/scene/add/gps 0.2 0.9 0.1
 /vis/scene/endOfEventAction accumulate
 /gun/particle mu-
-/gun/energy 1. TeV
-/gun/position 0. 0. -100. m
+/gun/energy 100. GeV
+#/gun/position 0. 0. -1000. m
 #/vis/ogl/set/displayListLimit 50000

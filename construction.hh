@@ -33,7 +33,7 @@ private:
 virtual void ConstructSDandField();
 
 G4int nCols, nRows;
-G4double xWorld, yWorld, zWorld;
+G4double xWorld, yWorld, zWorld, boxsize;
 G4bool isCherenkov, isScintillator, isTOF, isAtmosphere, isMountain;
 
 G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere, *solidMBase;
