@@ -31,9 +31,10 @@ MySensitiveDetector::~MySensitiveDetector()
 G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist)
 {
     G4Track *track = aStep->GetTrack();
-    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName()<< " and I have a kinetic energy of "
-    << track->GetDynamicParticle()->GetKineticEnergy()<< " MeV"<<G4endl;
-    //track->SetTrackStatus(fStopAndKill);
+    /*************************TOGGLING THIS OFF FOR FUNNY TESTING ********************/
+    /*G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName() << " and I have a kinetic energy of "
+           << track->GetDynamicParticle()->GetKineticEnergy() / GeV << " [GeV]" << G4endl;*/
+    track->SetTrackStatus(fStopAndKill);
     /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
 
     /*as soon as the photon enters the detector it DIES, track not propogated any further,
@@ -87,13 +88,39 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
 
 
-  /*  if (G4UniformRand() < quEff->Value(wlen))
-    {*/
-        man->FillNtupleIColumn(1, 0, evt);
-        man->FillNtupleDColumn(1, 1, posDetector[0]);
-        man->FillNtupleDColumn(1, 2, posDetector[1]);
-        man->FillNtupleDColumn(1, 3, posDetector[2]);
-        man->AddNtupleRow(1);
-  /*  } just turned off the efficiency for the time being*/
+    /*  if (G4UniformRand() < quEff->Value(wlen))
+       {*/
+    man->FillNtupleIColumn(1, 0, evt);
+    man->FillNtupleDColumn(1, 1, posDetector[0]);
+    man->FillNtupleDColumn(1, 2, posDetector[1]);
+    man->FillNtupleDColumn(1, 3, posDetector[2]);
+    man->AddNtupleRow(1);
+    /*  } just turned off the efficiency for the time being*/
+
+
+
+
+    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName() << " and I have a kinetic energy of "
+           << track->GetDynamicParticle()->GetKineticEnergy() / GeV << " [GeV]" << G4endl;
+    //track->SetTrackStatus(fStopAndKill);
+    /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
+    /*MUONSTESTINGSTUFFFORFUN*/
+
+
+    G4String parnam = track->GetParticleDefinition()->GetParticleName();
+    if (parnam == "mu-" || parnam == "mu+")
+    {
+        man->FillNtupleDColumn(3, 0, track->GetDynamicParticle()->GetKineticEnergy() / GeV);
+        man->FillNtupleDColumn(3, 1, posPhoton[0]);
+        if (parnam == "mu-")
+        {
+            man->FillNtupleIColumn(3, 2, -1);
+        }
+        else
+        {
+            man->FillNtupleIColumn(3, 2, +1);
+        }
+        man->AddNtupleRow(3);
+    }
     return true;
 }

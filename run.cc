@@ -4,7 +4,7 @@ MyRunAction::MyRunAction()
 {
 //G4AnalysisManager::Instance()->SetVerboseLevel(1);
     G4AnalysisManager *man = G4AnalysisManager::Instance();
-	
+
     man->SetNtupleMerging(true);
     man->CreateNtuple("Photons", "Photons");
     man->CreateNtupleIColumn("fEvent");
@@ -12,7 +12,7 @@ MyRunAction::MyRunAction()
     man->CreateNtupleDColumn("fY");
     man->CreateNtupleDColumn("fZ");
     man->CreateNtupleDColumn("fWlen");
-    man->CreateNtupleDColumn("fT");    
+    man->CreateNtupleDColumn("fT");
     man->FinishNtuple(0);
 
     man->CreateNtuple("Hits", "Hits");
@@ -25,6 +25,13 @@ MyRunAction::MyRunAction()
 		man->CreateNtuple("Scoring","Scoring");
 		man->CreateNtupleDColumn("fEdep");
 		man->FinishNtuple(2);
+
+    //muon energy GRAB
+    man->CreateNtuple("MuonsEnergy","MuonsEnergy");
+    man->CreateNtupleDColumn("GroundLevelEnergy");
+    man->CreateNtupleDColumn("MuonsPosition");
+    man->CreateNtupleIColumn("MuonsCharge");
+    man->FinishNtuple(3);
 
 }//action here for start of entire thing, spans multiple runs
 
