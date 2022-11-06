@@ -41,7 +41,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     } //commented out for G4.11 macro compatibility
 
     //randomize energy
-    G4double randenergy = G4UniformRand() * TeV + 500 * GeV;
+    G4double randenergy = G4UniformRand() * 50 * GeV + 750 * GeV;
     G4String ptype;
     G4double randX = (0.5 - G4UniformRand()) * 2000 * m;
     G4ThreeVector pos(randX, 0., -1000. * m);
@@ -61,6 +61,12 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 
     G4cout << "gnerated a " << ptype << " with energy " << randenergy / GeV << "[GeV]" << " at X = "
            << randX / m << "[m]" << G4endl;
-
-    fParticleGun->GeneratePrimaryVertex(anEvent);
+    for (int i = 0; i < 11; i++)
+    {
+        //trying to generate at the same time for komedy
+        pos[0] = (-500 + 100 * i) * m;
+        fParticleGun->SetParticlePosition(pos);
+        fParticleGun->GeneratePrimaryVertex(anEvent);
+    }
+    //fParticleGun->GeneratePrimaryVertex(anEvent);
 }

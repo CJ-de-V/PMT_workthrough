@@ -97,16 +97,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     man->AddNtupleRow(1);
     /*  } just turned off the efficiency for the time being*/
 
-
-
-
-    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName() << " and I have a kinetic energy of "
-           << track->GetDynamicParticle()->GetKineticEnergy() / GeV << " [GeV]" << G4endl;
-    //track->SetTrackStatus(fStopAndKill);
-    /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
-    /*MUONSTESTINGSTUFFFORFUN*/
-
-
+/*MUON DATA*/
     G4String parnam = track->GetParticleDefinition()->GetParticleName();
     if (parnam == "mu-" || parnam == "mu+")
     {
