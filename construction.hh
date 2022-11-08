@@ -33,26 +33,28 @@ private:
 virtual void ConstructSDandField();
 
 G4int nCols, nRows;
-G4double xWorld, yWorld, zWorld, boxsize;
-G4bool isCherenkov, isScintillator, isTOF, isAtmosphere, isMountain;
+G4double xWorld = 1 * m, yWorld = 1 * m, zWorld = 1 * m;
+G4bool isCherenkov, isScintillator, isTOF, isAtmosphere, isMountain, isIronSlab;
 
-G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere, *solidMBase;
+G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere, *solidMBase, *solidIronSlab;
 G4Trd *solidMCap;
-G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10], *logicMBase, *logicMCap;
-G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10], *physMBase, *physMCap;
+G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10], *logicMBase, *logicMCap, *logicIronSlab;
+G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10], *physMBase, *physMCap, *physIronSlab;
 G4OpticalSurface *mirrorSurface;
 
 G4GenericMessenger *fMessenger;
 
-G4Material *SiO2, *H2O, *Aerogel, *worldMat, *NaI, *Air[10], *Granite, *Sandstone;
+G4Material *SiO2, *H2O, *Aerogel, *worldMat, *NaI, *Air[10], *Granite, *Sandstone, *Fe;
 G4Element *C, *Na, *I, *O, *N;
 
 void DefineMaterials();
+void DefineWorldVolume();
 void ConstructCherenkov();
 void ConstructScintillator();
 void ConstructTOF();
 void ConstructAtmosphere();
 void ConstructMountain();
+void ConstructIronSlab();
 };
 
 #endif

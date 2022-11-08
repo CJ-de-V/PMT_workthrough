@@ -4,13 +4,14 @@
 /vis/drawVolume
 /vis/viewer/set/autoRefresh true
 /vis/scene/add/trajectories smooth
-/vis/scene/add/scale 10 cm
+#/vis/scene/add/scale 10 cm
 /vis/scene/add/axes
 /vis/scene/add/eventID
 /vis/scene/add/gps 0.2 0.9 0.1
 /vis/scene/endOfEventAction accumulate
 /gun/particle mu-
-/gun/energy 100. GeV
+/gun/energy 1000. GeV
 /run/setCut 10 m
-#/gun/position 0. 0. -1000. m
+#above is supercritical for visualization :)
+/gun/position 0. 0. -1.6 m
 #/vis/ogl/set/displayListLimit 50000

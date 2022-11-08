@@ -30,6 +30,7 @@ MyRunAction::MyRunAction()
     man->CreateNtuple("MuonsEnergy","MuonsEnergy");
     man->CreateNtupleDColumn("GroundLevelEnergy");
     man->CreateNtupleDColumn("MuonsPosition");
+    man->CreateNtupleDColumn("MuonsMomentum");
     man->CreateNtupleIColumn("MuonsCharge");
     man->FinishNtuple(3);
 

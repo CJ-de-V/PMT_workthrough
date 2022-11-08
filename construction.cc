@@ -10,23 +10,19 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger->DeclareProperty("TOF", isTOF, "Toggle time of flight setup");
     fMessenger->DeclareProperty("atmosphere", isAtmosphere, "Toggle atmosphere setup");
     fMessenger->DeclareProperty("mountain", isMountain, "Toggle Mountain setup");
-    fMessenger->DeclareProperty("ScaleWorld", boxsize, "Toggle Size of setup");
+    //fMessenger->DeclareProperty("ScaleWorld", boxsize, "Toggle Size of setup");
 
     nCols = 10;
     nRows = 10;
 
     DefineMaterials();
 
-    boxsize = 1000.*m;
-    xWorld = boxsize;
-    yWorld = boxsize;
-    zWorld = boxsize;
-
     isCherenkov = false;
     isScintillator = false;
     isTOF = false;
     isAtmosphere = false;
-    isMountain = true;
+    isMountain = false;//mountanous setup
+    isIronSlab = true; //QA
 }
 
 MyDetectorConstruction::~MyDetectorConstruction()
@@ -40,6 +36,7 @@ void MyDetectorConstruction::DefineMaterials()
     G4double energy[2] = { 1.239841939 * eV / 0.9, 1.239841939 * eV / 0.2 };//energies of blue and violet light
 
 
+    //?????????????????????TWODEFINITIONS OF SIO2, HERE AND BOTTOM DELETE ONE
     //base material creation
     SiO2 = new G4Material("SiO2", 2.201 * g / cm3, 2);
     SiO2->AddElement(nist->FindOrBuildElement("Si"), 1);
@@ -125,6 +122,15 @@ void MyDetectorConstruction::DefineMaterials()
     Sandstone = new G4Material("SiO2", 2.2 * g / cm3, 2);
     Sandstone->AddElement(nist->FindOrBuildElement("Si"), 1);
     Sandstone->AddElement(nist->FindOrBuildElement("O"), 2);
+
+    Fe = nist->FindOrBuildMaterial("G4_Fe");
+}
+
+void MyDetectorConstruction::DefineWorldVolume()
+{
+    solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
+    logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
+    physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, true);
 }
 
 void MyDetectorConstruction::ConstructAtmosphere()
@@ -162,23 +168,43 @@ void MyDetectorConstruction::ConstructCherenkov()
     }
 }
 
-void :: MyDetectorConstruction::ConstructMountain()
+void MyDetectorConstruction::ConstructIronSlab()
 {
+    xWorld = 1 * m, yWorld = 1 * m, zWorld = 2 * m;
+    DefineWorldVolume();
+
     //Base setup
-    solidMBase = new G4Box("solidRadiator", xWorld, yWorld, 0.35 * zWorld);
-    logicMBase = new G4LogicalVolume(solidMBase, Granite, "logicalMBase");
-    physMBase = new G4PVPlacement(0, G4ThreeVector(0., 0., (1 - 0.35-0.01) * zWorld), logicMBase, "physMBase", logicWorld, false, 0, true);
-    //cap setup
-    solidMCap = new G4Trd("solidMCap",0., 0.5*xWorld, yWorld,yWorld, 0.3*zWorld);
-    logicMCap = new G4LogicalVolume(solidMCap, Sandstone, "logicalMCap");
-    physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.-0.01*zWorld), logicMCap, "physMCap", logicWorld, false, 0, true);
+    solidIronSlab = new G4Box("solidIronSlab", xWorld, yWorld, 1.5 * m);
+    logicIronSlab = new G4LogicalVolume(solidIronSlab, Fe, "logicIronSlab");
+    physIronSlab = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicIronSlab, "physIronSlab", logicWorld, false, 0, true);
 
     //detector setup
-    solidDetector = new G4Box("solidDetector", xWorld , yWorld , 0.01 * m);
+    solidDetector = new G4Box("solidDetector", xWorld, yWorld, 0.01 * m);
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
-    physDetector = new G4PVPlacement(0, G4ThreeVector(0.,0., 0.999*zWorld),
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., 1.51 * m),
                                      logicDetector, "physDetector", logicWorld, 0, true);
+}
 
+void :: MyDetectorConstruction::ConstructMountain()
+{
+    xWorld = 1 * km, yWorld = 1 * km, zWorld = 1 * km;
+    DefineWorldVolume();
+
+    //Base setup
+    solidMBase = new G4Box("solidMBase", xWorld, yWorld, 0.35 * zWorld);
+    logicMBase = new G4LogicalVolume(solidMBase, Granite, "logicalMBase");
+    physMBase = new G4PVPlacement(0, G4ThreeVector(0., 0., (1 - 0.35 - 0.01) * zWorld), logicMBase, "physMBase", logicWorld, false, 0, true);
+
+    //cap setup
+    solidMCap = new G4Trd("solidMCap", 0., 0.5 * xWorld, yWorld, yWorld, 0.3 * zWorld);
+    logicMCap = new G4LogicalVolume(solidMCap, Sandstone, "logicalMCap");
+    physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 0.01 * zWorld), logicMCap, "physMCap", logicWorld, false, 0, true);
+
+    //detector setup
+    solidDetector = new G4Box("solidDetector", xWorld, yWorld, 0.01 * m);
+    logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.999 * zWorld),
+                                     logicDetector, "physDetector", logicWorld, 0, true);
 }
 
 void MyDetectorConstruction::ConstructScintillator()
@@ -220,9 +246,10 @@ void MyDetectorConstruction::ConstructTOF()
 
 G4VPhysicalVolume *MyDetectorConstruction::Construct()
 {
-    solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
-    logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
-    physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, true);
+    /*solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
+       logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
+       physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, true);*/
+    //Moved to each of the setups for their different world sizes. Not done for base cases from PMT
 
     if (isCherenkov)
     {
@@ -231,6 +258,10 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     else if (isMountain)
     {
         ConstructMountain();
+    }
+    else if (isIronSlab)
+    {
+        ConstructIronSlab();
     }
     else if (isScintillator)
     {
@@ -252,12 +283,12 @@ void MyDetectorConstruction::ConstructSDandField()
 {
     MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector");
 
-      if (/*logicDetector != NULL*/ !isAtmosphere)
-       {
-          //if the detector has been defined in any setup we wish to have a sensitivedetector
-          logicDetector->SetSensitiveDetector(sensDet);
-       }
-       /*essentially logicdetector is not NULL if we leave it untouched.
+    if (/*logicDetector != NULL*/ !isAtmosphere)
+    {
+        //if the detector has been defined in any setup we wish to have a sensitivedetector
+        logicDetector->SetSensitiveDetector(sensDet);
+    }
+    /*essentially logicdetector is not NULL if we leave it untouched.
        meaning if our setup doesn't havea logicdetector this if statement runs and runmanager is handed garbage
        this garbage causes crashes
        commented out for the atmospheric case, causes some issues*/

@@ -102,15 +102,17 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     if (parnam == "mu-" || parnam == "mu+")
     {
         man->FillNtupleDColumn(3, 0, track->GetDynamicParticle()->GetKineticEnergy() / GeV);
-        man->FillNtupleDColumn(3, 1, posPhoton[0]);
+        man->FillNtupleDColumn(3, 1, posPhoton[0] / m);
+        man->FillNtupleDColumn(3, 2, momPhoton.mag() / GeV);
         if (parnam == "mu-")
         {
-            man->FillNtupleIColumn(3, 2, -1);
+            man->FillNtupleIColumn(3, 3, -1);
         }
         else
         {
-            man->FillNtupleIColumn(3, 2, +1);
+            man->FillNtupleIColumn(3, 3, +1);
         }
+
         man->AddNtupleRow(3);
     }
     return true;

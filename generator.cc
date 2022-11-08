@@ -40,11 +40,11 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         fParticleGun->SetParticleCharge(charge);
     } //commented out for G4.11 macro compatibility
 
-    //randomize energy
-    G4double randenergy = G4UniformRand() * 50 * GeV + 750 * GeV;
+    //randomize energy, disabled for QA, should likely be done by an iterative macro. for this and position
+/*    G4double randenergy = G4UniformRand() * 50 * GeV + 750 * GeV;*/
     G4String ptype;
-    G4double randX = (0.5 - G4UniformRand()) * 2000 * m;
-    G4ThreeVector pos(randX, 0., -1000. * m);
+    /*G4double randX = (0.5 - G4UniformRand()) * 2000 * m;
+    G4ThreeVector pos(randX, 0., -1000. * m);*/
     //charge ratio
     if (G4UniformRand() < 1.3 / 2.3)
     {
@@ -55,7 +55,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     {
         fParticleGun->SetParticleDefinition(G4ParticleTable::GetParticleTable()->FindParticle("mu-"));
         ptype = "mu-";
-    }
+    }/*
     fParticleGun->SetParticleEnergy(randenergy);
     fParticleGun->SetParticlePosition(pos);
 
@@ -65,8 +65,8 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     {
         //trying to generate at the same time for komedy
         pos[0] = (-500 + 100 * i) * m;
-        fParticleGun->SetParticlePosition(pos);
+        fParticleGun->SetParticlePosition(pos);*/
         fParticleGun->GeneratePrimaryVertex(anEvent);
-    }
+    //some more commented out stuff}
     //fParticleGun->GeneratePrimaryVertex(anEvent);
 }

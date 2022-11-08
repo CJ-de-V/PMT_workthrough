@@ -7,6 +7,7 @@
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
 #include "QGSP_BERT.hh"
+#include "FTFP_BERT.hh"
 //standard physics list for hadron processes
 #include "G4DecayPhysics.hh" //why can i leave this out again?
 
@@ -26,13 +27,14 @@ int main(int argc, char **argv)
     #endif
 
     runManager->SetUserInitialization(new MyDetectorConstruction());
-    runManager->SetUserInitialization(new MyPhysicsList());
+    //runManager->SetUserInitialization(new MyPhysicsList());
+    runManager->SetUserInitialization(new FTFP_BERT());
     runManager->SetUserInitialization(new MyActionInitialization());
 
-    //atmospheric processes
-    G4VModularPhysicsList *physics = new QGSP_BERT();
-    physics->RegisterPhysics(new G4DecayPhysics());
-    runManager->SetUserInitialization(physics);
+    //atmospheric processes ha no our standardp hysicslis
+  //  G4VModularPhysicsList *physics = new FTFP_BERT();
+    //physics->RegisterPhysics(new G4DecayPhysics());
+    //runManager->SetUserInitialization(physics);
 
     G4VisManager *visManager = new G4VisExecutive();
     visManager->Initialize();                            // into run.mac for multithreading reasons
