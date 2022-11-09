@@ -1,0 +1,3 @@
+/run/initialize
+/run/setCut 10 m
+/control/loop det.mac pos -1000 0 200

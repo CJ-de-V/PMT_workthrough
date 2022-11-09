@@ -21,8 +21,8 @@ MyDetectorConstruction::MyDetectorConstruction()
     isScintillator = false;
     isTOF = false;
     isAtmosphere = false;
-    isMountain = false;//mountanous setup
-    isIronSlab = true; //QA
+    isMountain = true;//mountanous setup
+    isIronSlab = false; //QA
 }
 
 MyDetectorConstruction::~MyDetectorConstruction()
@@ -113,17 +113,39 @@ void MyDetectorConstruction::DefineMaterials()
     }
 
 
-    /*granite and sandstone rough Setup, a finer setup can
-       be used in the end if we want to include for example Al2O3*/
-    Granite = new G4Material("SiO2", 2.65 * g / cm3, 2);
-    Granite->AddElement(nist->FindOrBuildElement("Si"), 1);
-    Granite->AddElement(nist->FindOrBuildElement("O"), 2);
+    /*Densities from tunnel geology, composition from engineering doc.*/
 
-    Sandstone = new G4Material("SiO2", 2.2 * g / cm3, 2);
-    Sandstone->AddElement(nist->FindOrBuildElement("Si"), 1);
-    Sandstone->AddElement(nist->FindOrBuildElement("O"), 2);
+    /*Granite and setup for main sim.*/
+    Granite = new G4Material("Granite", 2648 * kg / m3, 11);
+    Granite->AddElement(nist->FindOrBuildElement("O"), 0.48764);
+    Granite->AddElement(nist->FindOrBuildElement("Na"), 0.03831);
+    Granite->AddElement(nist->FindOrBuildElement("Mg"), 0.000019);
+    Granite->AddElement(nist->FindOrBuildElement("Al"), 0.05495);
+    Granite->AddElement(nist->FindOrBuildElement("Si"), 0.35835);
+    Granite->AddElement(nist->FindOrBuildElement("P"), 0.00025);
+    Granite->AddElement(nist->FindOrBuildElement("K"), 0.04102);
+    Granite->AddElement(nist->FindOrBuildElement("Ca"), 0.00497);
+    Granite->AddElement(nist->FindOrBuildElement("Ti"), 0.00103);
+    Granite->AddElement(nist->FindOrBuildElement("Mn"), 0.00024);
+    Granite->AddElement(nist->FindOrBuildElement("Fe"), 0.01322);
 
-    Fe = nist->FindOrBuildMaterial("G4_Fe");
+    /*Sandstone setup for main sim*/
+    Sandstone = new G4Material("Sandstone", 2500 * kg / m3, 11);
+    Sandstone->AddElement(nist->FindOrBuildElement("O"), 0.52667);
+    Sandstone->AddElement(nist->FindOrBuildElement("Na"), 0.00011);
+    Sandstone->AddElement(nist->FindOrBuildElement("Mg"), 0.000021);
+    Sandstone->AddElement(nist->FindOrBuildElement("Al"), 0.02813);
+    Sandstone->AddElement(nist->FindOrBuildElement("Si"), 0.43703);
+    Sandstone->AddElement(nist->FindOrBuildElement("P"), 0.00017);
+    Sandstone->AddElement(nist->FindOrBuildElement("K"), 0.000043);
+    Sandstone->AddElement(nist->FindOrBuildElement("Ca"), 0.00218);
+    Sandstone->AddElement(nist->FindOrBuildElement("Ti"), 0.0007);
+    Sandstone->AddElement(nist->FindOrBuildElement("Mn"), 0.000064);
+    Sandstone->AddElement(nist->FindOrBuildElement("Fe"), 0.00488);
+
+    /*Iron setup for QA*/
+    Fe = nist->FindOrBuildMaterial("G4_Fe");/*new G4Material("Fe", 8.874 * g / cm3, 1);
+                                               Fe->AddElement(nist->FindOrBuildElement("Fe"), 1);*/
 }
 
 void MyDetectorConstruction::DefineWorldVolume()
@@ -187,23 +209,44 @@ void MyDetectorConstruction::ConstructIronSlab()
 
 void :: MyDetectorConstruction::ConstructMountain()
 {
-    xWorld = 1 * km, yWorld = 1 * km, zWorld = 1 * km;
+    xWorld = 1.5 * km, yWorld = 0.1 * km, zWorld = 0.6 * km;
     DefineWorldVolume();
 
     //Base setup
-    solidMBase = new G4Box("solidMBase", xWorld, yWorld, 0.35 * zWorld);
+    solidMBase = new G4Box("solidMBase", 1250 * m, yWorld, 150 * m);
     logicMBase = new G4LogicalVolume(solidMBase, Granite, "logicalMBase");
-    physMBase = new G4PVPlacement(0, G4ThreeVector(0., 0., (1 - 0.35 - 0.01) * zWorld), logicMBase, "physMBase", logicWorld, false, 0, true);
+    physMBase = new G4PVPlacement(0, G4ThreeVector(250. * m, 0., (450 - 10.) * m), logicMBase, "physMBase", logicWorld, false, 0, true);
+
+    //TiltedBase setup
+    /*  const G4ThreeVector pt[8] = { G4ThreeVector(0, 0, 1), G4ThreeVector(1, 1, 1),//Edge with smaller Y of the base at -z
+                                    G4ThreeVector(11, 10, 12), G4ThreeVector(10, 10, 10),//Edge with bigger Y of the base at -z
+                                    G4ThreeVector(10, 111, 10), G4ThreeVector(1101, 101, 101), //Edge with smaller Y of the base at +z
+                                    G4ThreeVector(1011, 1011, 11011), G4ThreeVector(1011, 101, 11) //Edge with bigger Y of the base at +z
+       };
+       solidMTB = new G4Trap("solidMTB", pt);
+       logicMTB = new G4LogicalVolume(solidMTB, Granite, "logicalMTB");
+       physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 0.01 * zWorld), logicMTB, "physMTB", logicWorld, false, 0, true);
+       //temporarily scrapped since this is a real piece of work
+     */
+
+    //building up side setup
+    /*  solidMTB = new G4Trap("solidMTB", 2 * zWorld, 500. * m, 300. * m, 200. * m);
+       logicMTB = new G4LogicalVolume(solidMTB, Granite, "logicalMTB");
+       G4Transform3D transformDet = (new G4Rotate3D(90 * deg, G4ThreeVector(0, 0, 1))) * (new G4Translate3D(G4ThreeVector(0., 0., 0.)));
+       physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 0.01 * zWorld), logicMTB, "physMTB", logicWorld, false, 0, true);
+       //more tempscrapped
+     */
+
 
     //cap setup
-    solidMCap = new G4Trd("solidMCap", 0., 0.5 * xWorld, yWorld, yWorld, 0.3 * zWorld);
+    solidMCap = new G4Trd("solidMCap", 50. * m, 600. * m, yWorld, yWorld, 0.3 * zWorld);
     logicMCap = new G4LogicalVolume(solidMCap, Sandstone, "logicalMCap");
     physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 0.01 * zWorld), logicMCap, "physMCap", logicWorld, false, 0, true);
 
     //detector setup
-    solidDetector = new G4Box("solidDetector", xWorld, yWorld, 0.01 * m);
+    solidDetector = new G4Box("solidDetector", xWorld, yWorld, 0.5 * m);
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
-    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.999 * zWorld),
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., zWorld - 0.5 * m),
                                      logicDetector, "physDetector", logicWorld, 0, true);
 }
 

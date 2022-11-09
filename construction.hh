@@ -13,6 +13,7 @@
 #include "G4OpticalSurface.hh"
 #include "G4LogicalSkinSurface.hh"
 #include "G4Trd.hh"
+#include "G4Trap.hh"
 
 #include "detector.hh"
 
@@ -37,9 +38,10 @@ G4double xWorld = 1 * m, yWorld = 1 * m, zWorld = 1 * m;
 G4bool isCherenkov, isScintillator, isTOF, isAtmosphere, isMountain, isIronSlab;
 
 G4Box *solidWorld, *solidRadiator, *solidDetector, *solidScintillator, *solidAtmosphere, *solidMBase, *solidIronSlab;
-G4Trd *solidMCap;
-G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10], *logicMBase, *logicMCap, *logicIronSlab;
-G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10], *physMBase, *physMCap, *physIronSlab;
+G4Trd *solidMCap; //mountain tilted base
+G4Trap *solidMTB;
+G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume, *logicScintillator, *logicAtmosphere[10], *logicMBase, *logicMTB, *logicMCap, *logicIronSlab;
+G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physAtmosphere[10], *physMBase, *physMTB, *physMCap, *physIronSlab;
 G4OpticalSurface *mirrorSurface;
 
 G4GenericMessenger *fMessenger;

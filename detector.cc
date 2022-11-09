@@ -34,6 +34,11 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     /*************************TOGGLING THIS OFF FOR FUNNY TESTING ********************/
     /*G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName() << " and I have a kinetic energy of "
            << track->GetDynamicParticle()->GetKineticEnergy() / GeV << " [GeV]" << G4endl;*/
+
+
+    G4cout << "Hi, I'm a: " << track->GetParticleDefinition()->GetParticleName() << " and my primary has an energgy of "
+           << track->GetVertexKineticEnergy() / GeV << " [GeV]" << G4endl;
+
     track->SetTrackStatus(fStopAndKill);
     /*>>>>>>>comented out for ONLY the timing test, has to be reenabled<<<<<<<<<<*/
 
@@ -112,7 +117,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
         {
             man->FillNtupleIColumn(3, 3, +1);
         }
-
+        man->FillNtupleDColumn(3, 4, track->GetVertexKineticEnergy() / GeV);
         man->AddNtupleRow(3);
     }
     return true;

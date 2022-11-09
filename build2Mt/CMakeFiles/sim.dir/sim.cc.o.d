@@ -689,6 +689,8 @@ CMakeFiles/sim.dir/sim.cc.o: \
  /home/cornelius/Software/geant4-install/include/Geant4/G4LogicalSkinSurface.icc \
  /home/cornelius/Software/geant4-install/include/Geant4/G4Trd.hh \
  /home/cornelius/Software/geant4-install/include/Geant4/G4Trd.icc \
+ /home/cornelius/Software/geant4-install/include/Geant4/G4Trap.hh \
+ /home/cornelius/Software/geant4-install/include/Geant4/G4Trap.icc \
  /home/cornelius/Documents/mygeant4projects/physicsmatterstut/detector.hh \
  /home/cornelius/Software/geant4-install/include/Geant4/G4VSensitiveDetector.hh \
  /home/cornelius/Software/geant4-install/include/Geant4/G4VReadOutGeometry.hh \

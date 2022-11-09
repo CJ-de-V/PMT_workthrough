@@ -1,4 +1,2 @@
-/run/initialize
-/detector/nCols {cols}
-/run/reinitializeGeometry
-/run/beamOn 100
+/gun/energy {eng} GeV
+/run/beamOn 10
