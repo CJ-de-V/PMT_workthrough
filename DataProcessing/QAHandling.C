@@ -3,10 +3,8 @@ void QAHandling() {
    std::unique_ptr<TFile> QARfile(TFile::Open("QA10k.root") );
    //list TTrees in the chain
    QARfile->ls();
-   
    //attempt to access the muonenergy TTree from QARfile
    std::unique_ptr<TTree> MomDist(QARfile->Get<TTree>("MuonsEnergy"));
-   
    //MomDist->Draw("GroundLevelEnergy:MuonsPosition","","colz");
    //this is an attempt to draw
    //MomDist->ls();

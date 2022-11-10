@@ -213,9 +213,9 @@ void :: MyDetectorConstruction::ConstructMountain()
     DefineWorldVolume();
 
     //Base setup
-    solidMBase = new G4Box("solidMBase", 1250 * m, yWorld, 150 * m);
+    solidMBase = new G4Box("solidMBase", xWorld, yWorld, 150 * m);
     logicMBase = new G4LogicalVolume(solidMBase, Granite, "logicalMBase");
-    physMBase = new G4PVPlacement(0, G4ThreeVector(250. * m, 0., (450 - 10.) * m), logicMBase, "physMBase", logicWorld, false, 0, true);
+    physMBase = new G4PVPlacement(0, G4ThreeVector(0., 0., (450 - 10.) * m), logicMBase, "physMBase", logicWorld, false, 0, true);
 
     //TiltedBase setup
     /*  const G4ThreeVector pt[8] = { G4ThreeVector(0, 0, 1), G4ThreeVector(1, 1, 1),//Edge with smaller Y of the base at -z
@@ -239,9 +239,9 @@ void :: MyDetectorConstruction::ConstructMountain()
 
 
     //cap setup
-    solidMCap = new G4Trd("solidMCap", 50. * m, 600. * m, yWorld, yWorld, 0.3 * zWorld);
+    solidMCap = new G4Trd("solidMCap", 50. * m, 600. * m, yWorld, yWorld, 250. * m);
     logicMCap = new G4LogicalVolume(solidMCap, Sandstone, "logicalMCap");
-    physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 0.01 * zWorld), logicMCap, "physMCap", logicWorld, false, 0, true);
+    physMCap = new G4PVPlacement(0, G4ThreeVector(0., 0., 40. * m), logicMCap, "physMCap", logicWorld, false, 0, true);
 
     //detector setup
     solidDetector = new G4Box("solidDetector", xWorld, yWorld, 0.5 * m);

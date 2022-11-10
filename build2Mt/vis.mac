@@ -13,5 +13,5 @@
 /gun/energy 1000. GeV
 /run/setCut 10 m
 #above is supercritical for visualization :)
-/gun/position 0. 0. -600. m
+/gun/position 0. 0. 1500. m
 #/vis/ogl/set/displayListLimit 50000

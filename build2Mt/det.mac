@@ -1,2 +1,2 @@
-/gun/position 0. 0. {pos} m
-/control/loop scandet.mac eng 200 700 100
+/gun/position {pos} 0. -550. m
+/control/loop scandet.mac eng 200 1000 100
