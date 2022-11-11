@@ -1,17 +1,22 @@
 /run/initialize
 /vis/open OGL
-/vis/viewer/set/viewpointVector 1. 0. 0.
+/vis/viewer/set/viewpointVector 0.  1. 0.1
 /vis/drawVolume
 /vis/viewer/set/autoRefresh true
 /vis/scene/add/trajectories smooth
 #/vis/scene/add/scale 10 cm
 /vis/scene/add/axes
 /vis/scene/add/eventID
-/vis/scene/add/gps 0.2 0.9 0.1
+#/vis/scene/add/gps 0.2 0.9 0.1
 /vis/scene/endOfEventAction accumulate
+/vis/set/textColour 1. 1. 1. 1.
+/vis/scene/add/text 100. 0. 500 m 48 0. 0. Granite Base
+/vis/scene/add/text -200.  0. 200. m 48 0. 0. Sandstone Cap
+/vis/scene/add/text -1400.  0. 575. m 48 0. 0. Detector/Tunnel
+/vis/scene/add/text 100. 0. -400 m 48 0. 0. Air
+#above is supercritical for visualization :)
 /gun/particle mu-
 /gun/energy 1000. GeV
 /run/setCut 10 m
-#above is supercritical for visualization :)
-/gun/position 0. 0. 1500. m
+/gun/position 0. 0. -220. m
 #/vis/ogl/set/displayListLimit 50000

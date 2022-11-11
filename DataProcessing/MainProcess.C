@@ -34,7 +34,7 @@ void MainProcess() {
    //chain->Draw("MuonsPrimEnergy:MuonsPosition","","lego");
    //use lego instead of colz for a delectable 3d plot
    
-   TH2F *someTH2=new TH2F("someTH2", "Muons counts as a function of position and primary energy", 15, -725 ,25, 17, 175, 1025);
+   TH2F *someTH2=new TH2F("someTH2", "Muons counts as a function of position and primary energy", 15, -725 ,25, 19, 75, 1025);
    
    	someTH2->GetXaxis()->SetTitle("Position");
 	someTH2->GetYaxis()->SetTitle("Primary energy");
@@ -46,11 +46,18 @@ void MainProcess() {
 	c1->SetGridx();
 	c1->SetGridy();
    
-   //so apparently the >> is some kind of "piping" thing by the looks of it?
+   //so apparently the >> is some kind of "piping" thing by the looks of it? look into multiple canvasses
     gStyle->SetPalette(1);
     chain->Draw("MuonsPrimEnergy : MuonsPosition >> someTH2", "", "colzTEXT");
     
+    TH2F *groundTH2=new TH2F("groundTH2", "Groundlevelenergies vs position", 15, -725 ,25, 19, 75, 1025);
     
+    groundTH2->SetStats(0);
+    //chain->Draw("GroundLevelEnergy : MuonsPosition >> groundTH2", "", "colzTEXT");
+    
+       TH2F *engcompTH2=new TH2F("engcompTH2", "Primary energy vs groundlevel energy", 20, 0 ,1000, 20, 0, 1000);
+    groundTH2->SetStats(0);
+    //chain->Draw("MuonsPrimEnergy:GroundLevelEnergy : MuonsPosition", "", "TEXT");
     
     
 }
