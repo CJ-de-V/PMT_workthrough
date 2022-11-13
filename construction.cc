@@ -21,8 +21,8 @@ MyDetectorConstruction::MyDetectorConstruction()
     isScintillator = false;
     isTOF = false;
     isAtmosphere = false;
-    isMountain = true;//mountanous setup
-    isIronSlab = false; //QA
+    isMountain = false;//mountanous setup
+    isIronSlab = true; //QA
 }
 
 MyDetectorConstruction::~MyDetectorConstruction()

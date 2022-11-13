@@ -34,10 +34,10 @@ void MainProcess() {
    //chain->Draw("MuonsPrimEnergy:MuonsPosition","","lego");
    //use lego instead of colz for a delectable 3d plot
    
-   TH2F *someTH2=new TH2F("someTH2", "Muons counts as a function of position and primary energy", 15, -725 ,25, 19, 75, 1025);
+   TH2F *someTH2=new TH2F("someTH2", "Detected muon energies as a function of position for 10 000 primaries at each energy-position", 15, -725 ,25, 20, 1, 800);
    
-   	someTH2->GetXaxis()->SetTitle("Position");
-	someTH2->GetYaxis()->SetTitle("Primary energy");
+   	someTH2->GetXaxis()->SetTitle("x-Position (m)");
+	someTH2->GetYaxis()->SetTitle("Muon energy (GeV)");
    
    	TCanvas *c1 = new TCanvas();
 	someTH2->SetStats(0); //do not want the statistics box 
@@ -48,12 +48,12 @@ void MainProcess() {
    
    //so apparently the >> is some kind of "piping" thing by the looks of it? look into multiple canvasses
     gStyle->SetPalette(1);
-    chain->Draw("MuonsPrimEnergy : MuonsPosition >> someTH2", "", "colzTEXT");
+    //chain->Draw("MuonsPrimEnergy : MuonsPosition >> someTH2", "", "colzTEXT");
     
-    TH2F *groundTH2=new TH2F("groundTH2", "Groundlevelenergies vs position", 15, -725 ,25, 19, 75, 1025);
+    TH2F *groundTH2=new TH2F("groundTH2", "Groundlevelenergies vs position", 15, -725 ,25, 38, 75, 1025);
     
     groundTH2->SetStats(0);
-    //chain->Draw("GroundLevelEnergy : MuonsPosition >> groundTH2", "", "colzTEXT");
+    chain->Draw("GroundLevelEnergy : MuonsPosition >> someTH2", "", "colz");
     
        TH2F *engcompTH2=new TH2F("engcompTH2", "Primary energy vs groundlevel energy", 20, 0 ,1000, 20, 0, 1000);
     groundTH2->SetStats(0);
